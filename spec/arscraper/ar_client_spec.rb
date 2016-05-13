@@ -1,15 +1,15 @@
 require 'spec_helper'
 
-RSpec.describe Arscraper::BookScraper do
+RSpec.describe Arscraper::ArClient do
 
-  subject(:scraper) { Arscraper::BookScraper.instance}
+  subject(:scraper) { Arscraper::ArClient.instance}
 
   describe 'without passing an isbn' do
 
     it 'will return a proper warning' do
       expect {
          scraper.find('asdfasdf')
-       }.to raise_exception(Arscraper::InvliadIsbnError)
+       }.to raise_exception(Arscraper::InvalidISBNError)
     end
   end
 end

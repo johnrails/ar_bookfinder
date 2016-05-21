@@ -58,6 +58,7 @@ module Arscraper
       agent.cookie_jar.add(url, cookies)
       agent.request_headers(headers)
     end
+    
     def headers
       {
       	"Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",

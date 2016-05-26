@@ -1,12 +1,22 @@
 require 'singleton'
 require 'mechanize'
 require 'library_stdnums'
+require 'pry'
 module Arscraper
 
   class InvalidISBNError < StandardError;end
 
   class ArClient
     include Singleton
+
+    def self.initialize
+      @@initialize ||= new
+    end
+
+    def initialize
+      @agent = Mechanize.new
+      setup_request
+    end
 
     def find(isbn)
       raise InvalidISBNError unless StdNum::ISBN.valid?(isbn)
@@ -17,13 +27,13 @@ module Arscraper
 
 
     def agent
-      @agent ||= Mechanize.new
-      setup_request
+      @agent
     end
 
     def cookies
       @cookies ||= Mechanize::Cookie.new('BFUserType', 'Student')
       @cookies.domain = "www.arfinder.com"
+      @cookies
     end
 
     def search_field
@@ -38,8 +48,12 @@ module Arscraper
       search_form.field_with(name: 'ctl00$clientDateHour')
     end
 
+    def search_results
+      @search
+    end
+
     def search_page
-      @search ||= agent.get(url)
+      @search = agent.get(url)
     end
 
     def search_button
@@ -47,7 +61,8 @@ module Arscraper
     end
 
     def search_form
-      search_page.form('aspnetForm')
+      pry
+      search_results.form('aspnetForm')
     end
 
     def url
@@ -55,10 +70,11 @@ module Arscraper
     end
 
     def setup_request
+      pry
       agent.cookie_jar.add(url, cookies)
       agent.request_headers(headers)
     end
-    
+
     def headers
       {
       	"Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",

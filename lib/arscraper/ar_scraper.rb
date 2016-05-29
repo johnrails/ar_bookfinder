@@ -6,11 +6,11 @@ module Arscraper
     end
 
     def book_title
-      results_page.search('#Table7').first.children[1].children[3].children.first.text
+      parent_node.children.first.text
     end
 
     def book_description
-      results_page.search('#Table7').first.children[1].children[3].text
+      parent_node.text
     end
 
     def book_level
@@ -23,12 +23,15 @@ module Arscraper
 
     private
 
-    def parent_node
-      results_page.search('#Table7').first.children[1].children[3]
-    end
+    attr_accessor :results_page
 
     def results_page
       @ar_results
     end
+    
+    def parent_node
+      results_page.search('#Table7').first.children[1].children[3]
+    end
+
   end
 end

@@ -1,4 +1,5 @@
 require 'singleton'
+
 require 'mechanize'
 require 'library_stdnums'
 require 'pry'
@@ -9,31 +10,33 @@ module Arscraper
   class ArClient
     include Singleton
 
-    def self.initialize
-      @@initialize ||= new
-    end
-
-    def initialize
-      @agent = Mechanize.new
-      setup_request
-    end
-
     def find(isbn)
       raise InvalidISBNError unless StdNum::ISBN.valid?(isbn)
+      # Add agent cookies
+      add_cookies
+      # set the request headers
+      set_headers
+      #get the search page
+      @search_page = agent.get(url)
+
+      #add the isbn value to the search field
       search_field.value = isbn
+      # set some hidden inputs required by the service
       search_day.value   = Time.now.mday
       search_hour.value  = Time.now.hour
+      submit_form
     end
 
 
     def agent
-      @agent
+      @agent ||= ::Mechanize.new
     end
 
-    def cookies
-      @cookies ||= Mechanize::Cookie.new('BFUserType', 'Student')
+    def add_cookies
+      @cookies ||= ::Mechanize::Cookie.new('BFUserType', 'Student')
       @cookies.domain = "www.arfinder.com"
       @cookies
+      agent.cookie_jar.add(url, @cookies)
     end
 
     def search_field
@@ -48,12 +51,8 @@ module Arscraper
       search_form.field_with(name: 'ctl00$clientDateHour')
     end
 
-    def search_results
-      @search
-    end
-
     def search_page
-      @search = agent.get(url)
+      @search ||= agent.get(url)
     end
 
     def search_button
@@ -61,8 +60,12 @@ module Arscraper
     end
 
     def search_form
-      pry
-      search_results.form('aspnetForm')
+      search_page.form('aspnetForm')
+    end
+
+    def submit_form
+      submit_button = search_form.button_with(name: 'ctl00$ContentPlaceHolder1$btnDoIt')
+      search_form.click_button(submit_button)
     end
 
     def url
@@ -70,11 +73,14 @@ module Arscraper
     end
 
     def setup_request
-      pry
-      agent.cookie_jar.add(url, cookies)
-      agent.request_headers(headers)
+      @agent.cookie_jar.add(url, cookies)
+      @agent.request_headers = headers
+      @agent
     end
 
+    def set_headers
+      agent.request_headers = headers
+    end
     def headers
       {
       	"Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",

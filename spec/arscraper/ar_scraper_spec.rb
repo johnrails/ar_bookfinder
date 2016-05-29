@@ -23,4 +23,20 @@ describe Arscraper::ArScraper do
     end
   end
 
+  describe 'cover image src' do
+    let(:image_src) { 'http://coverscans.renlearn.com/9780898127911.jpg' }
+
+    it 'will return the image src' do
+      expect(parsed.image_source).to eq(image_src)
+    end
+  end
+
+  describe 'book description' do
+    let(:desc) { "This book is a basic exploration of the appearance, behavior, and habitat of pandas, which are some of Earth's smallest bears. Also included is a story from folklore explaining why pandas have black-and-white fur."}
+
+    it 'will return the book description' do
+      expect(parsed.book_description).to eq(desc)
+    end
+  end
+
 end

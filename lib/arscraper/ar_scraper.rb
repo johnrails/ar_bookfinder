@@ -13,6 +13,10 @@ module Arscraper
       parent_node.children.last.text.strip
     end
 
+    def author
+      parent_node.children[2].text.strip.split(',').reverse.join(' ').strip
+    end
+
     def book_level
       parent_node.children[7].children[4].children.first.text
     end
@@ -21,10 +25,17 @@ module Arscraper
       parent_node.children[7].children[6].children.first.text
     end
 
-    def image_source
-      results_page.images_with(src: /coverscans/).first.src
+    def cover_image
+      results_page.images_with(src: /coverscans/).first
     end
 
+    def image_source
+      cover_image.src
+    end
+
+    def download_image
+      cover_image.fetch.save
+    end
     private
 
     attr_accessor :results_page

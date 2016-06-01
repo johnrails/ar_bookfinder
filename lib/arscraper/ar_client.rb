@@ -64,7 +64,8 @@ module Arscraper
     end
 
     def submit_form
-      submit_button = search_form.button_with(name: 'ctl00$ContentPlaceHolder1$btnDoIt')
+      button = 'ctl00$ContentPlaceHolder1$btnDoIt'
+      submit_button = search_form.button_with(name: button)
       search_form.click_button(submit_button)
     end
 

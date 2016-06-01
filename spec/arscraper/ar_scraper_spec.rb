@@ -39,4 +39,10 @@ describe Arscraper::ArScraper do
     end
   end
 
+  describe '#author' do
+    it 'will return the book author' do
+      expect(parsed.author).to eq("Valerie Bodden")
+    end
+  end
+
 end

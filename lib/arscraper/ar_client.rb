@@ -1,5 +1,5 @@
 require 'singleton'
-
+require 'uri'
 require 'mechanize'
 require 'library_stdnums'
 require 'pry'
@@ -70,7 +70,7 @@ module Arscraper
     end
 
     def url
-      "http://www.arbookfind.com/default.aspx"
+      URI.parse "http://www.arbookfind.com/default.aspx"
     end
 
     def setup_request

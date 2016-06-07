@@ -1,4 +1,8 @@
 require "arscraper/version"
+require 'uri'
+require 'mechanize'
+require 'library_stdnums'
+require 'pry'
 
 module Arscraper
   # Your code goes here...

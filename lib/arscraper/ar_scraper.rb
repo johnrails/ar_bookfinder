@@ -33,8 +33,8 @@ module Arscraper
       cover_image.src
     end
 
-    def download_image
-      cover_image.fetch.save
+    def download_image(path)
+      cover_image.fetch.save(path)
     end
     private
 

@@ -45,4 +45,16 @@ describe Arscraper::ArScraper do
     end
   end
 
+  describe '#cover_image' do
+    let(:image_src) { 'http://coverscans.renlearn.com/9780898127911.jpg' }
+    it 'will return the cover image' do
+      expect(parsed.cover_image.src).to eq(image_src)
+    end
+  end
+
+  describe '#download_image' do
+    it 'will return the cover image' do
+      expect(parsed.download_image(Dir.new("./"))).to eq(true)
+    end
+  end
 end

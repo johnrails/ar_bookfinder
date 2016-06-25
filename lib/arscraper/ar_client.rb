@@ -1,21 +1,18 @@
 require 'singleton'
-require 'uri'
-require 'mechanize'
-require 'library_stdnums'
-require 'pry'
 module Arscraper
 
   class InvalidISBNError < StandardError;end
 
   class ArClient
     include Singleton
-
     def find(isbn)
       raise InvalidISBNError unless StdNum::ISBN.valid?(isbn)
       # Add agent cookies
       add_cookies
       # set the request headers
       set_headers
+      puts "DO I EVEN GET HERE #{agent.user_agent}"
+      @agent.user_agent_alias = 'Windows Chrome'
       #get the search page
       @search_page = agent.get(url)
 
@@ -74,7 +71,7 @@ module Arscraper
     end
 
     def setup_request
-      @agent.cookie_jar.add(url, cookies)
+      @agent.cookie_jar.add(url.host, cookies)
       @agent.request_headers = headers
       @agent
     end

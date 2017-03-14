@@ -10,19 +10,19 @@ module Arscraper
     end
 
     def book_description
-      parent_node.children.last.text.strip
+      book_details_node.children.last.text.strip
     end
 
     def author
-      parent_node.children[2].text.strip.split(',').reverse.join(' ').strip
+      book_details_node.children[0].text.strip.split(',').reverse.join(' ').strip
     end
 
     def book_level
-      parent_node.children[7].children[4].children.first.text
+      book_details_node.children[9].children.first.text
     end
 
     def ar_points
-      parent_node.children[7].children[6].children.first.text
+      book_details_node.children[11].children.first.text
     end
 
     def cover_image
@@ -46,6 +46,10 @@ module Arscraper
 
     def parent_node
       results_page.search('#Table7').first.children[1].children[3]
+    end
+
+    def book_details_node
+      parent_node.children[3]
     end
   end
 end

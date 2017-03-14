@@ -13,7 +13,7 @@ describe Arscraper::ArScraper do
 
   describe 'AR book level' do
     it 'will return the book leve of the book' do
-      expect(parsed .book_level).to eq('2.9')
+      expect(parsed.book_level).to eq('2.9')
     end
   end
 
